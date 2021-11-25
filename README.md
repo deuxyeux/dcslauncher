@@ -1,6 +1,9 @@
 # DCS Launcher
 DCS Launcher is a .NET 5.0 application for automating the process of starting DCS World along with all related utilities.
 
+## Requirements:
+Install .NET 5.0 Runtime: https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-5.0.12-windows-x64-installer
+
 ## Initial setup:
 * Specify the main folder of your DCS installation (e.g: C:\Program Files\Eagle Dynamics\DCS World) and base DCS Saved Games Folder (e.g: C:\Users\Username\Saved Games\DCS).
 * Specify any additional utilities.
