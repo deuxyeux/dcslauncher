@@ -50,13 +50,9 @@ Enables GPU overclocking/underclocking/voltage control. Uses NVIDIA Inspector by
 Autocloses the launcher when DCS has exited.
 
 ## Miscellaneous Menu
-Delete fxo:
-Deletes fxo files from the folder specified by the Browse button. You can also specify the name by typing it in (e.g DCS). It uses the user "Saved Games" folder as a base folder. A confirmation dialog will display the number of files to be deleted.
-Delete metashaders:
-Deletes metashader files from the folder specified by the Browse button. You can also specify the name by typing it in (e.g DCS). It uses the user "Saved Games" folder as a base folder. A confirmation dialog will display the number of files to be deleted.
-Disable Dynamic Ticks & HPET:
-Disables dynamic ticks with bcdedit which is a popular system tweak to reduce stutters.
-Enable Dynamic Ticks & HPET:
-Enables dynamic ticks with bcdedit.
-Splash Image Functions:
+* Delete fxo: Deletes fxo files from the folder specified by the Browse button. You can also specify the name by typing it in (e.g DCS). It uses the user "Saved Games" folder as a base folder. A confirmation dialog will display the number of files to be deleted.
+* Delete metashaders: Deletes metashader files from the folder specified by the Browse button. You can also specify the name by typing it in (e.g DCS). It uses the user "Saved Games" folder as a base folder. A confirmation dialog will display the number of files to be deleted.
+* Disable Dynamic Ticks & HPET: Disables dynamic ticks with bcdedit which is a popular system tweak to reduce stutters.
+* Enable Dynamic Ticks & HPET: Enables dynamic ticks with bcdedit.
+## Splash Image Functions:
 Allows to choose a custom splash image with a specified size. A default and "VR" preset splashes are provided. The "VR" splash image is a small image with size equal to the SteamVR monitor window.
