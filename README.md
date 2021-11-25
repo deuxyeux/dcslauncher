@@ -1,11 +1,11 @@
-# dcslauncher
+# DCS Launcher
 DCS Launcher was created to automate the process of starting DCS World along with all related utilities.
 
-Initial setup:
-Specify the main folder of your DCS installation (e.g: C:\Program Files\Eagle Dynamics\DCS World) and base DCS Saved Games Folder (e.g: C:\Users\Username\Saved Games\DCS).
-Specify any additional utilities.
+## Initial setup:
+* Specify the main folder of your DCS installation (e.g: C:\Program Files\Eagle Dynamics\DCS World) and base DCS Saved Games Folder (e.g: C:\Users\Username\Saved Games\DCS).
+* Specify any additional utilities.
 
-The launcher supports two modes:
+### The launcher supports two modes:
  * Flatscreen mode is the default mode and uses DCS World settings from Base Saved Games folder.
  * VR mode requires a separate Saved Games folder to be specified. It can be populated in the Miscellaneous menu.
 
