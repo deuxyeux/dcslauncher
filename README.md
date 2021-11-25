@@ -31,13 +31,13 @@ VoiceAttack can be specified either as main VoiceAttack executable or VAICOM PRO
 Monitors WMI for currently available USB devices. Two device groups are available: Controllers & HMD for controller and VR headset monitoring respectively. The lists are populated by Device Instance paths. If one or mode devices in the list aren't available, the main Start button is blocked until it becomes available. The scanning interval is 1 second.
 
 ## SteamVR Settings
-Lighthouse Control: when checked, automates the power-on and power-off of SteamVR 2.0 lighthouses. Uses the lighthouse-v2-manager utility by nouser2013. (https://github.com/nouser2013/lighthouse-v2-manager/). Use the "Discover" button and copy-paste the lighthouse hardware addresses to the appropriate boxes and enable them.
-Reposition: repositions SteamVR window on startup.
-FSR: Settings related to fholger's OpenVR FSR mod. It is automatically detected and enabled when the .dll is installed in DCS World/bin folder. Tooltips for the settings are displayed on mouse over.
+* Lighthouse Control: when checked, automates the power-on and power-off of SteamVR 2.0 lighthouses. Uses the lighthouse-v2-manager utility by nouser2013. (https://github.com/nouser2013/lighthouse-v2-manager/). Use the "Discover" button and copy-paste the lighthouse hardware addresses to the appropriate boxes and enable them.
+* Reposition: repositions SteamVR window on startup.
+* FSR: Settings related to fholger's OpenVR FSR mod. It is automatically detected and enabled when the .dll is installed in DCS World/bin folder. Tooltips for the settings are displayed on mouse over.
 
 ## Pimax Settings (WIP)
-Use PiTool: Starts and minimizes PiTool utility on VR mode.
-PiService Control: Starts PiService service instead of PiTool.
+* Use PiTool: Starts and minimizes PiTool utility on VR mode.
+* PiService Control: Starts PiService service instead of PiTool.
 Options are mutually exclusive.
 
 ## VR Mode
