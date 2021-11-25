@@ -15,12 +15,12 @@ Resolution, Resizing & Reposition Settings:
 Allow repositioning & resizing of DCS World window and splash screen in both modes. A custom DCS resolution can be specified (useful for making screen space for debugging windows).
 
 ## Miscellaneous Options
-Minimize JetSeat Handler (available only when SimShaker is in use): minimizes the JetSeat Handler window after SimShaker startup.
-Delete tracks older than X days: deletes .trk files from the Base Saved Games folder which are older than specified number of days.
-Delete Older Tacview ACMI files: deletes Tacview files older than specified number of days from %userprofile%\Documents\Tacview folder.
-High CPU priority for DCS: temporarily adds a registry entry to enable high CPU priority for DCS.exe. The entry is removed after DCS is stopped.
-High Performance Power Plan: switches the system power plan to High Performance on DCS startup. The profile is switched back to Balanced when DCS is stopped.
-Auto close SimpleRadio: tries to close SRS-Client on DCS exit if it was automatically started with SRS Auto Connect option.
+* Minimize JetSeat Handler (available only when SimShaker is in use): minimizes the JetSeat Handler window after SimShaker startup.
+* Delete tracks older than X days: deletes .trk files from the Base Saved Games folder which are older than specified number of days.
+* Delete Older Tacview ACMI files: deletes Tacview files older than specified number of days from %userprofile%\Documents\Tacview folder.
+* High CPU priority for DCS: temporarily adds a registry entry to enable high CPU priority for DCS.exe. The entry is removed after DCS is stopped.
+* High Performance Power Plan: switches the system power plan to High Performance on DCS startup. The profile is switched back to Balanced when DCS is stopped.
+* Auto close SimpleRadio: tries to close SRS-Client on DCS exit if it was automatically started with SRS Auto Connect option.
 
 ## Utilities
 Specifies utilities to use on DCS start.
