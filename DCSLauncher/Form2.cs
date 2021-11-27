@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DCSLauncher
@@ -74,9 +76,11 @@ namespace DCSLauncher
             int SteamVRPosX = Convert.ToInt32(ConfigurationManager.AppSettings["SteamVRPosX"]);
             int SteamVRPosY = Convert.ToInt32(ConfigurationManager.AppSettings["SteamVRPosY"]);
             bool FSREnable = Convert.ToBoolean(ConfigurationManager.AppSettings["FSREnable"]);
-            decimal FSRRenderScale = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRenderScale"]);
-            decimal FSRSharpness = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRSharpness"]);
-            decimal FSRRadius = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRadius"]);
+
+            decimal FSRRenderScale = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRenderScale"], new CultureInfo("en-US"));
+            decimal FSRSharpness = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRSharpness"], new CultureInfo("en-US"));
+            decimal FSRRadius = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRadius"], new CultureInfo("en-US"));
+
             bool FSRMIPBias = Convert.ToBoolean(ConfigurationManager.AppSettings["FSRMIPBias"]);
             bool FSRDebug = Convert.ToBoolean(ConfigurationManager.AppSettings["FSRDebug"]);
             bool MinimizeJetSeat = Convert.ToBoolean(ConfigurationManager.AppSettings["MinimizeJetSeat"]);
@@ -214,18 +218,25 @@ namespace DCSLauncher
         {
             string DCSPath = (ConfigurationManager.AppSettings["DCSPath"]);
             string FSREnable = Convert.ToString(ConfigurationManager.AppSettings["FSREnable"]);
-            string FSRRenderScale = Convert.ToString(ConfigurationManager.AppSettings["FSRRenderScale"]);
-            string FSRSharpness = Convert.ToString(ConfigurationManager.AppSettings["FSRSharpness"]);
-            string FSRRadius = Convert.ToString(ConfigurationManager.AppSettings["FSRRadius"]);
+            decimal FSRRenderScale = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRenderScale"], new CultureInfo("en-US"));
+            decimal FSRSharpness = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRSharpness"], new CultureInfo("en-US"));
+            decimal FSRRadius = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRadius"], new CultureInfo("en-US"));
             string FSRMIPBias = Convert.ToString(ConfigurationManager.AppSettings["FSRMIPBias"]);
             string FSRDebug = Convert.ToString(ConfigurationManager.AppSettings["FSRDebug"]);
+
+            string FSRRenderScaleStr = Convert.ToString(FSRRenderScale, System.Globalization.CultureInfo.InvariantCulture);
+            string FSRSharpnessStr = Convert.ToString(FSRSharpness, System.Globalization.CultureInfo.InvariantCulture);
+            string FSRRadiusStr = Convert.ToString(FSRRadius, System.Globalization.CultureInfo.InvariantCulture);
 
             StreamWriter writer = null;
             Dictionary<string, string> replacements = new Dictionary<string, string>();
             replacements.Add("\"enabled\":", FSREnable.ToLower());
-            replacements.Add("\"renderScale\":", FSRRenderScale.Replace(",", "."));
-            replacements.Add("\"sharpness\":", FSRSharpness.Replace(",", "."));
-            replacements.Add("\"radius\":", FSRRadius.Replace(",", "."));
+            replacements.Add("\"renderScale\":", FSRRenderScaleStr);
+            replacements.Add("\"sharpness\":", FSRSharpnessStr);
+            replacements.Add("\"radius\":", FSRRadiusStr);
+            //replacements.Add("\"renderScale\":", FSRRenderScaleStr.Replace(",", "."));
+            //replacements.Add("\"sharpness\":", FSRSharpness.Replace(",", "."));
+            //replacements.Add("\"radius\":", FSRRadius.Replace(",", "."));
             replacements.Add("\"applyMIPBias\":", FSRMIPBias.ToLower());
             replacements.Add("\"debugMode\":", FSRDebug.ToLower());
 
@@ -345,9 +356,15 @@ namespace DCSLauncher
             Utils.AddOrUpdateAppSettings("ApplyToFlatscreen", Convert.ToString(checkBox_ApplyToFlatscreen.Checked));
             Utils.AddOrUpdateAppSettings("ApplyToVR", Convert.ToString(checkBox_ApplyToVR.Checked));
             Utils.AddOrUpdateAppSettings("FSREnable", Convert.ToString(checkBox_FSREnable.Checked));
-            Utils.AddOrUpdateAppSettings("FSRRenderScale", Convert.ToString(numeric_FSRRenderScale.Value));
-            Utils.AddOrUpdateAppSettings("FSRSharpness", Convert.ToString(numeric_FSRSharpness.Value));
-            Utils.AddOrUpdateAppSettings("FSRRadius", Convert.ToString(numeric_FSRRadius.Value));
+
+            string FSRRenderScaleStr = Convert.ToString(numeric_FSRRenderScale.Value, new CultureInfo("en-US"));
+            string FSRSharpnessStr = Convert.ToString(numeric_FSRSharpness.Value, new CultureInfo("en-US"));
+            string FSRRadiusStr = Convert.ToString(numeric_FSRRadius.Value, new CultureInfo("en-US"));
+
+            Utils.AddOrUpdateAppSettings("FSRRenderScale", FSRRenderScaleStr);
+            Utils.AddOrUpdateAppSettings("FSRSharpness", FSRSharpnessStr);
+            Utils.AddOrUpdateAppSettings("FSRRadius", FSRRadiusStr);
+
             Utils.AddOrUpdateAppSettings("FSRMIPBias", Convert.ToString(checkBox_FSRMIPBias.Checked));
             Utils.AddOrUpdateAppSettings("FSRDebug", Convert.ToString(checkBox_FSRDebug.Checked));
             Utils.AddOrUpdateAppSettings("MinimizeJetSeat", Convert.ToString(this.MinimizeJetSeat.Checked));

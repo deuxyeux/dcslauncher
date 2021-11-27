@@ -2,18 +2,23 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows10.0.17763.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
 	<ApplicationIcon>DCSLauncher.ico</ApplicationIcon>
 	<AssemblyName>DCSLauncher</AssemblyName>
 	<RootNamespace>DCSLauncher</RootNamespace>
+	<Platforms>AnyCPU;x64</Platforms>
+	<DebugType>none</DebugType>
+	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+	<Description>DCS Launcher</Description>
+	<EnableNETAnalyzers>False</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Management" Version="5.0.0" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="5.0.0" />
+    <PackageReference Include="System.Management" Version="6.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
