@@ -34,6 +34,7 @@ namespace DCSLauncher
             toolTip1.SetToolTip(numeric_FSRRenderScale, "[FSR] Render Scale");
             toolTip1.SetToolTip(numeric_FSRSharpness, "[FSR] Sharpness");
             toolTip1.SetToolTip(numeric_FSRRadius, "[FSR] Radius");
+            toolTip1.SetToolTip(checkBox_FSRNIS, "[FSR] Enable NVIDIA Image Scaling instead of AMD FidelityFX");
             toolTip1.SetToolTip(checkBox_FSRMIPBias, "[FSR] Apply negative LOD bias to texture MIP levels");
             toolTip1.SetToolTip(checkBox_FSRDebug, "[FSR] Visualize radius to which FSR is applied");
             toolTip1.SetToolTip(checkBox_SteamVRReposition, "Enable repositioning of SteamVR monitor window");
@@ -81,6 +82,7 @@ namespace DCSLauncher
             decimal FSRSharpness = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRSharpness"], new CultureInfo("en-US"));
             decimal FSRRadius = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRadius"], new CultureInfo("en-US"));
 
+            bool FSRNIS = Convert.ToBoolean(ConfigurationManager.AppSettings["FSRNIS"]);
             bool FSRMIPBias = Convert.ToBoolean(ConfigurationManager.AppSettings["FSRMIPBias"]);
             bool FSRDebug = Convert.ToBoolean(ConfigurationManager.AppSettings["FSRDebug"]);
             bool MinimizeJetSeat = Convert.ToBoolean(ConfigurationManager.AppSettings["MinimizeJetSeat"]);
@@ -114,6 +116,7 @@ namespace DCSLauncher
             checkBox_DCSCustomResolution.Checked = DCSCustomResolution;
             checkBox_SplashReposition.Checked = SplashReposition;
             checkBox_FSREnable.Checked = FSREnable;
+            checkBox_FSRNIS.Checked = FSRNIS;
             checkBox_FSRMIPBias.Checked = FSRMIPBias;
             checkBox_FSRDebug.Checked = FSRDebug;
             checkBox_ApplyToFlatscreen.Checked = ApplyToFlatscreen;
@@ -210,6 +213,7 @@ namespace DCSLauncher
                 this.numeric_FSRRenderScale.Enabled = true;
                 this.numeric_FSRSharpness.Enabled = true;
                 this.numeric_FSRRadius.Enabled = true;
+                this.checkBox_FSRNIS.Enabled = true;
                 this.checkBox_FSRMIPBias.Enabled = true;
                 this.checkBox_FSRDebug.Enabled = true;
             }
@@ -221,6 +225,7 @@ namespace DCSLauncher
             decimal FSRRenderScale = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRenderScale"], new CultureInfo("en-US"));
             decimal FSRSharpness = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRSharpness"], new CultureInfo("en-US"));
             decimal FSRRadius = Convert.ToDecimal(ConfigurationManager.AppSettings["FSRRadius"], new CultureInfo("en-US"));
+            string FSRNIS = Convert.ToString(ConfigurationManager.AppSettings["FSRNIS"]);
             string FSRMIPBias = Convert.ToString(ConfigurationManager.AppSettings["FSRMIPBias"]);
             string FSRDebug = Convert.ToString(ConfigurationManager.AppSettings["FSRDebug"]);
 
@@ -231,6 +236,7 @@ namespace DCSLauncher
             StreamWriter writer = null;
             Dictionary<string, string> replacements = new Dictionary<string, string>();
             replacements.Add("\"enabled\":", FSREnable.ToLower());
+            replacements.Add("\"useNIS\":", FSRNIS.ToLower());
             replacements.Add("\"renderScale\":", FSRRenderScaleStr);
             replacements.Add("\"sharpness\":", FSRSharpnessStr);
             replacements.Add("\"radius\":", FSRRadiusStr);
@@ -365,6 +371,7 @@ namespace DCSLauncher
             Utils.AddOrUpdateAppSettings("FSRSharpness", FSRSharpnessStr);
             Utils.AddOrUpdateAppSettings("FSRRadius", FSRRadiusStr);
 
+            Utils.AddOrUpdateAppSettings("FSRNIS", Convert.ToString(checkBox_FSRNIS.Checked));
             Utils.AddOrUpdateAppSettings("FSRMIPBias", Convert.ToString(checkBox_FSRMIPBias.Checked));
             Utils.AddOrUpdateAppSettings("FSRDebug", Convert.ToString(checkBox_FSRDebug.Checked));
             Utils.AddOrUpdateAppSettings("MinimizeJetSeat", Convert.ToString(this.MinimizeJetSeat.Checked));

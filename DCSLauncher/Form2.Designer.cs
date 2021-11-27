@@ -63,6 +63,7 @@
             this.MinimizeJetSeat = new System.Windows.Forms.CheckBox();
             this.PiTool = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBox_FSRNIS = new System.Windows.Forms.CheckBox();
             this.checkBox_FSRDebug = new System.Windows.Forms.CheckBox();
             this.checkBox_FSRMIPBias = new System.Windows.Forms.CheckBox();
             this.numeric_FSRRadius = new System.Windows.Forms.NumericUpDown();
@@ -546,6 +547,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBox_FSRNIS);
             this.groupBox3.Controls.Add(this.checkBox_FSRDebug);
             this.groupBox3.Controls.Add(this.checkBox_FSRMIPBias);
             this.groupBox3.Controls.Add(this.numeric_FSRRadius);
@@ -565,6 +567,17 @@
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "SteamVR Settings";
+            // 
+            // checkBox_FSRNIS
+            // 
+            this.checkBox_FSRNIS.AutoSize = true;
+            this.checkBox_FSRNIS.Enabled = false;
+            this.checkBox_FSRNIS.Location = new System.Drawing.Point(4, 91);
+            this.checkBox_FSRNIS.Name = "checkBox_FSRNIS";
+            this.checkBox_FSRNIS.Size = new System.Drawing.Size(44, 19);
+            this.checkBox_FSRNIS.TabIndex = 13;
+            this.checkBox_FSRNIS.Text = "NIS";
+            this.checkBox_FSRNIS.UseVisualStyleBackColor = true;
             // 
             // checkBox_FSRDebug
             // 
@@ -1365,5 +1378,6 @@
         private System.Windows.Forms.NumericUpDown numeric_CustomResolutionHeight;
         private System.Windows.Forms.NumericUpDown numeric_CustomResolutionWidth;
         private System.Windows.Forms.CheckBox checkBox_GPUOverclock;
+        private System.Windows.Forms.CheckBox checkBox_FSRNIS;
     }
 }
