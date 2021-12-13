@@ -62,9 +62,10 @@ namespace DCSLauncher
             // 
             // numeric_BaseClockOffset
             // 
+            this.numeric_BaseClockOffset.Enabled = false;
             this.numeric_BaseClockOffset.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.numeric_BaseClockOffset.Location = new System.Drawing.Point(156, 8);
-            this.numeric_BaseClockOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numeric_BaseClockOffset.Margin = new System.Windows.Forms.Padding(2);
             this.numeric_BaseClockOffset.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -91,9 +92,10 @@ namespace DCSLauncher
             // 
             // numeric_MemoryClockOffset
             // 
+            this.numeric_MemoryClockOffset.Enabled = false;
             this.numeric_MemoryClockOffset.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.numeric_MemoryClockOffset.Location = new System.Drawing.Point(342, 8);
-            this.numeric_MemoryClockOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numeric_MemoryClockOffset.Margin = new System.Windows.Forms.Padding(2);
             this.numeric_MemoryClockOffset.Maximum = new decimal(new int[] {
             3000,
             0,
@@ -111,6 +113,7 @@ namespace DCSLauncher
             // numeric_LockVoltagePoint
             // 
             this.numeric_LockVoltagePoint.DecimalPlaces = 6;
+            this.numeric_LockVoltagePoint.Enabled = false;
             this.numeric_LockVoltagePoint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.numeric_LockVoltagePoint.Increment = new decimal(new int[] {
             1,
@@ -118,7 +121,7 @@ namespace DCSLauncher
             0,
             196608});
             this.numeric_LockVoltagePoint.Location = new System.Drawing.Point(140, 31);
-            this.numeric_LockVoltagePoint.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numeric_LockVoltagePoint.Margin = new System.Windows.Forms.Padding(2);
             this.numeric_LockVoltagePoint.Maximum = new decimal(new int[] {
             3000000,
             0,
@@ -150,9 +153,10 @@ namespace DCSLauncher
             // 
             // numeric_PowerTarget
             // 
+            this.numeric_PowerTarget.Enabled = false;
             this.numeric_PowerTarget.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.numeric_PowerTarget.Location = new System.Drawing.Point(342, 31);
-            this.numeric_PowerTarget.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numeric_PowerTarget.Margin = new System.Windows.Forms.Padding(2);
             this.numeric_PowerTarget.Maximum = new decimal(new int[] {
             140,
             0,
@@ -175,7 +179,7 @@ namespace DCSLauncher
             // button_Save
             // 
             this.button_Save.Location = new System.Drawing.Point(315, 75);
-            this.button_Save.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_Save.Margin = new System.Windows.Forms.Padding(2);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(78, 24);
             this.button_Save.TabIndex = 8;
@@ -186,7 +190,7 @@ namespace DCSLauncher
             // button_Browse
             // 
             this.button_Browse.Location = new System.Drawing.Point(233, 75);
-            this.button_Browse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_Browse.Margin = new System.Windows.Forms.Padding(2);
             this.button_Browse.Name = "button_Browse";
             this.button_Browse.Size = new System.Drawing.Size(78, 24);
             this.button_Browse.TabIndex = 9;
@@ -200,9 +204,10 @@ namespace DCSLauncher
             // 
             // numeric_TempTarget
             // 
+            this.numeric_TempTarget.Enabled = false;
             this.numeric_TempTarget.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.numeric_TempTarget.Location = new System.Drawing.Point(156, 54);
-            this.numeric_TempTarget.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numeric_TempTarget.Margin = new System.Windows.Forms.Padding(2);
             this.numeric_TempTarget.Name = "numeric_TempTarget";
             this.numeric_TempTarget.Size = new System.Drawing.Size(51, 22);
             this.numeric_TempTarget.TabIndex = 11;
@@ -210,8 +215,9 @@ namespace DCSLauncher
             // checkBox_LockVoltagePoint
             // 
             this.checkBox_LockVoltagePoint.AutoSize = true;
+            this.checkBox_LockVoltagePoint.Enabled = false;
             this.checkBox_LockVoltagePoint.Location = new System.Drawing.Point(9, 34);
-            this.checkBox_LockVoltagePoint.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_LockVoltagePoint.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_LockVoltagePoint.Name = "checkBox_LockVoltagePoint";
             this.checkBox_LockVoltagePoint.Size = new System.Drawing.Size(124, 19);
             this.checkBox_LockVoltagePoint.TabIndex = 12;
@@ -221,8 +227,9 @@ namespace DCSLauncher
             // checkBox_TempTarget
             // 
             this.checkBox_TempTarget.AutoSize = true;
+            this.checkBox_TempTarget.Enabled = false;
             this.checkBox_TempTarget.Location = new System.Drawing.Point(9, 57);
-            this.checkBox_TempTarget.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_TempTarget.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_TempTarget.Name = "checkBox_TempTarget";
             this.checkBox_TempTarget.Size = new System.Drawing.Size(90, 19);
             this.checkBox_TempTarget.TabIndex = 13;
@@ -235,7 +242,7 @@ namespace DCSLauncher
             this.checkBox_TempPrioritize.AutoSize = true;
             this.checkBox_TempPrioritize.Enabled = false;
             this.checkBox_TempPrioritize.Location = new System.Drawing.Point(9, 80);
-            this.checkBox_TempPrioritize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_TempPrioritize.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_TempPrioritize.Name = "checkBox_TempPrioritize";
             this.checkBox_TempPrioritize.Size = new System.Drawing.Size(141, 19);
             this.checkBox_TempPrioritize.TabIndex = 14;
@@ -262,7 +269,7 @@ namespace DCSLauncher
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = global::DCSLauncher.Properties.Resources.DCSLauncher;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form6";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "GPU Overclocking Setup";

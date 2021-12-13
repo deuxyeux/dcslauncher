@@ -274,6 +274,7 @@ namespace DCSLauncher
                 if (new FileInfo("Controllers.txt").Length != 0 || new FileInfo("HMD.txt").Length != 0)
                 {
                     Console.WriteLine("Starting background device checking...");
+                    groupBox_Devices.Visible = true;
                     if (DeviceStatusCheck.IsBusy != true)
                     {
                         DeviceStatusCheck.RunWorkerAsync();
@@ -766,6 +767,7 @@ namespace DCSLauncher
             SettingsLoad();
             FolderDetect();
             NoUtilsDetect();
+            StartDeviceCheck();
         }
         private void WaitForDCSStart_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -1084,7 +1086,6 @@ namespace DCSLauncher
 
         private void DeviceStatusCheck_DoWork(object sender, DoWorkEventArgs e)
         {
-
             BackgroundWorker worker = sender as BackgroundWorker;
             int i = 0;
             int p = 0;
@@ -1217,6 +1218,10 @@ namespace DCSLauncher
                     HMDAvailable.Clear();
                     Globals.HMDDetected = false;
                 }
+            }
+            else
+            {
+                Globals.HMDDetected = true;
             }
         }
         private void Form1_Load(object sender, EventArgs e)

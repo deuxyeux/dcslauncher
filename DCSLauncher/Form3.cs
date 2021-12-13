@@ -43,7 +43,6 @@ namespace DCSLauncher
                     button_Browse_Click(new object(), new EventArgs());
                 }
             }
-
         }
         public static class Globals
         {
@@ -65,15 +64,19 @@ namespace DCSLauncher
             this.textBox_LHB2MacAddress.Text = Globals.LHB2MacAddress;
             this.checkBox_LHB1Enabled.Checked = Globals.LHB1Enabled;
             this.checkBox_LHB2Enabled.Checked = Globals.LHB2Enabled;
-            if (Globals.LighthouseManagerPath == "")
+            if (Convert.ToString(ConfigurationManager.AppSettings["LighthouseManagerPath"]) != "")
             {
-                this.textBox_LHB1MacAddress.Enabled = false;
-                this.textBox_LHB2MacAddress.Enabled = false;
-                this.checkBox_LHB1Enabled.Enabled = false;
-                this.checkBox_LHB2Enabled.Enabled = false;
-                this.button_Discover.Enabled = false;
-                this.button_Start.Enabled = false;
-                this.button_Stop.Enabled = false;
+                this.textBox_LHB1MacAddress.Enabled = true;
+                this.textBox_LHB2MacAddress.Enabled = true;
+                this.button_Discover.Enabled = true;
+            }
+            if (Convert.ToString(ConfigurationManager.AppSettings["LHB1MacAddress"]) != "")
+            {
+                this.checkBox_LHB1Enabled.Enabled = true;
+            }
+            if (Convert.ToString(ConfigurationManager.AppSettings["LHB2MacAddress"]) != "")
+            {
+                this.checkBox_LHB2Enabled.Enabled = true;
             }
         }
         public static void LHBControl(string action)
@@ -126,22 +129,60 @@ namespace DCSLauncher
 
         private void checkBox_LHB1Enabled_CheckedChanged(object sender, EventArgs e)
         {
-            Globals.LHB1Enabled = true;
+            if (checkBox_LHB1Enabled.Checked == true)
+            {
+                Globals.LHB1Enabled = true;
+                button_Start.Enabled = true;
+                button_Stop.Enabled = true;
+            }
+            else
+            {
+                Globals.LHB1Enabled = false;
+                button_Start.Enabled = false;
+                button_Stop.Enabled = false;
+            }
         }
 
         private void checkBox_LHB2Enabled_CheckedChanged(object sender, EventArgs e)
         {
-            Globals.LHB2Enabled = true;
+            if (checkBox_LHB2Enabled.Checked == true)
+            {
+                Globals.LHB2Enabled = true;
+                button_Start.Enabled = true;
+                button_Stop.Enabled = true;
+            }
+            else
+            {
+                Globals.LHB2Enabled = false;
+                button_Start.Enabled = false;
+                button_Stop.Enabled = false;
+            }
         }
 
         private void textBox_LHB1MacAddress_TextChanged(object sender, EventArgs e)
         {
             Globals.LHB1MacAddress = textBox_LHB1MacAddress.Text;
+            if (textBox_LHB1MacAddress.Text != "")
+            {
+                checkBox_LHB1Enabled.Enabled = true;
+            }
+            else
+            {
+                checkBox_LHB1Enabled.Enabled = false;
+            }
         }
 
         private void textBox_LHB2MacAddress_TextChanged(object sender, EventArgs e)
         {
             Globals.LHB2MacAddress = textBox_LHB2MacAddress.Text;
+            if (textBox_LHB2MacAddress.Text != "")
+            {
+                checkBox_LHB2Enabled.Enabled = true;
+            }
+            else
+            {
+                checkBox_LHB2Enabled.Enabled = false;
+            }
         }
         private void button_Discover_Click(object sender, EventArgs e)
         {
@@ -172,6 +213,7 @@ namespace DCSLauncher
                 string LighthouseManagerPath = openFileDialog1.FileName;
                 Utils.AddOrUpdateAppSettings("LighthouseManagerPath", Convert.ToString(LighthouseManagerPath));
             }
+            SettingsLoad();
         }
     }
 }

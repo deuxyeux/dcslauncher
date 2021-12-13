@@ -47,6 +47,16 @@ namespace DCSLauncher
             checkBox_TempTarget.Checked = TempTargetEnable;
             checkBox_TempPrioritize.Checked = TempPrioritize;
             string NvidiaInspectorPath = (ConfigurationManager.AppSettings["NvidiaInspectorPath"]);
+            if (Convert.ToString(ConfigurationManager.AppSettings["NvidiaInspectorPath"]) != "")
+            {
+                this.numeric_BaseClockOffset.Enabled = true;
+                this.numeric_MemoryClockOffset.Enabled = true;
+                this.numeric_LockVoltagePoint.Enabled = true;
+                this.checkBox_LockVoltagePoint.Enabled = true;
+                this.numeric_PowerTarget.Enabled = true;
+                this.numeric_TempTarget.Enabled = true;
+                this.checkBox_TempTarget.Enabled = true;
+            }
         }
 
         private void button_Save_Click(object sender, EventArgs e)
@@ -74,6 +84,7 @@ namespace DCSLauncher
                 string NvidiaInspectorPath = openFileDialog1.FileName;
                 Utils.AddOrUpdateAppSettings("NvidiaInspectorPath", Convert.ToString(NvidiaInspectorPath));
             }
+            SettingsLoad();
         }
 
         private void checkBox_TempTarget_CheckedChanged(object sender, EventArgs e)

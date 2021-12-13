@@ -179,13 +179,29 @@ namespace DCSLauncher
             {
                 this.LighthouseControl.Enabled = false;
             }
+            else
+            {
+                this.LighthouseControl.Enabled = true;
+            }
             if (ConfigurationManager.AppSettings["DeviceStatusCheck"] == "")
             {
                 this.DeviceStatusCheck.Enabled = false;
             }
-            if (ConfigurationManager.AppSettings["GPUOverclock"] == "")
+            if (ConfigurationManager.AppSettings["NvidiaInspectorPath"] == "")
             {
                 checkBox_GPUOverclock.Enabled = false;
+            }
+            else
+            {
+                this.checkBox_GPUOverclock.Enabled = true;
+            }
+            if (!File.Exists("Controllers.txt") && !File.Exists("HMD.txt"))
+            {
+                this.DeviceStatusCheck.Enabled = false;
+            }
+            else
+            {
+                this.DeviceStatusCheck.Enabled = true;
             }
             if (!DeleteTracks)
             {

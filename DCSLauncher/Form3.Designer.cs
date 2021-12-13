@@ -45,6 +45,7 @@
             // 
             // textBox_LHB1MacAddress
             // 
+            this.textBox_LHB1MacAddress.Enabled = false;
             this.textBox_LHB1MacAddress.Location = new System.Drawing.Point(9, 10);
             this.textBox_LHB1MacAddress.Name = "textBox_LHB1MacAddress";
             this.textBox_LHB1MacAddress.Size = new System.Drawing.Size(190, 31);
@@ -54,6 +55,7 @@
             // checkBox_LHB1Enabled
             // 
             this.checkBox_LHB1Enabled.AutoSize = true;
+            this.checkBox_LHB1Enabled.Enabled = false;
             this.checkBox_LHB1Enabled.Location = new System.Drawing.Point(206, 13);
             this.checkBox_LHB1Enabled.Name = "checkBox_LHB1Enabled";
             this.checkBox_LHB1Enabled.Size = new System.Drawing.Size(101, 29);
@@ -64,6 +66,7 @@
             // 
             // textBox_LHB2MacAddress
             // 
+            this.textBox_LHB2MacAddress.Enabled = false;
             this.textBox_LHB2MacAddress.Location = new System.Drawing.Point(9, 55);
             this.textBox_LHB2MacAddress.Name = "textBox_LHB2MacAddress";
             this.textBox_LHB2MacAddress.Size = new System.Drawing.Size(190, 31);
@@ -73,6 +76,7 @@
             // checkBox_LHB2Enabled
             // 
             this.checkBox_LHB2Enabled.AutoSize = true;
+            this.checkBox_LHB2Enabled.Enabled = false;
             this.checkBox_LHB2Enabled.Location = new System.Drawing.Point(206, 58);
             this.checkBox_LHB2Enabled.Name = "checkBox_LHB2Enabled";
             this.checkBox_LHB2Enabled.Size = new System.Drawing.Size(101, 29);
@@ -84,6 +88,7 @@
             // button_Start
             // 
             this.button_Start.BackColor = System.Drawing.Color.LightGreen;
+            this.button_Start.Enabled = false;
             this.button_Start.Location = new System.Drawing.Point(9, 100);
             this.button_Start.Name = "button_Start";
             this.button_Start.Size = new System.Drawing.Size(93, 38);
@@ -95,6 +100,7 @@
             // button_Stop
             // 
             this.button_Stop.BackColor = System.Drawing.Color.IndianRed;
+            this.button_Stop.Enabled = false;
             this.button_Stop.Location = new System.Drawing.Point(107, 100);
             this.button_Stop.Name = "button_Stop";
             this.button_Stop.Size = new System.Drawing.Size(93, 38);
@@ -116,6 +122,7 @@
             // button_Discover
             // 
             this.button_Discover.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button_Discover.Enabled = false;
             this.button_Discover.Location = new System.Drawing.Point(9, 145);
             this.button_Discover.Name = "button_Discover";
             this.button_Discover.Size = new System.Drawing.Size(191, 38);
@@ -153,7 +160,7 @@
             this.Controls.Add(this.textBox_LHB2MacAddress);
             this.Controls.Add(this.textBox_LHB1MacAddress);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = Properties.Resources.DCSLauncher;
+            this.Icon = global::DCSLauncher.Properties.Resources.DCSLauncher;
             this.Name = "Form3";
             this.Text = "LHB Setup";
             this.ResumeLayout(false);
