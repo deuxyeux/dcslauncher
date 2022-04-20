@@ -26,19 +26,38 @@ namespace DCSLauncher
         {
             InitializeComponent();
             Console.SetOut(new Utils.ControlWriter(LogBox));
+            CreateNotifyIcons();
             DCSPathCheck();
             SavedGamesPathCheck();
             SettingsLoad();
             FolderDetect();
             NoUtilsDetect();
+            DCSUpdateCheck();
             Utils.DeleteTracks();
             Utils.DeleteTacview();
-            Utils.DCSVersion();
             FSRDetect();
             DCSRunningCheck();
             StartDeviceCheck();
         }
-        public void SettingsLoad()
+        private void CreateNotifyIcons()
+        {
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["TrayIcon"]) == true)
+            {
+                notifyIcon1.Visible = true;
+            }
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["CtrlTrayIcon"]) == true)
+            {
+                notifyIcon2.Visible = true;
+            }
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["HMDTrayIcon"]) == true)
+            {
+                if (Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathVR"]) != "")
+                {
+                notifyIcon3.Visible = true;
+                }
+            }
+        }
+        private void SettingsLoad()
         {
             Globals.SavedGamesPath = KnownFolders.GetPath(KnownFolder.SavedGames) + @"\";
             bool TrackIR = Convert.ToBoolean(ConfigurationManager.AppSettings["TrackIR"]);
@@ -134,6 +153,7 @@ namespace DCSLauncher
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathBase"]) == "")
             {
                 this.radioButton_FlatscreenMode.Enabled = false;
+                this.flatscreenModeToolStripMenuItem.Enabled = false;
             }
             else
             {
@@ -142,6 +162,7 @@ namespace DCSLauncher
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathVR"]) == "")
             {
                 this.radioButton_VRMode.Enabled = false;
+                this.vRModeToolStripMenuItem.Enabled = false;
                 radioButton_FlatscreenMode.Checked = true;
             }
             else
@@ -157,7 +178,7 @@ namespace DCSLauncher
                 radioButton_FlatscreenMode.Checked = true;
             }
         }
-        public void DCSPathCheck()
+        private void DCSPathCheck()
         {
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]) == "")
             {
@@ -171,7 +192,7 @@ namespace DCSLauncher
                 }
             }
         }
-        public void SavedGamesPathCheck()
+        private void SavedGamesPathCheck()
         {
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathBase"]) == "")
             {
@@ -191,8 +212,14 @@ namespace DCSLauncher
             public static bool ControllersDetected { get; set; }
             public static bool HMDDetected { get; set; }
             public static string SavedGamesPath { get; set; }
+            public static string DCSLocalVersion { get; set; }
+            public static string DCSRemoteVersion { get; set; }
+            public static string DCSLocalVersionBuild { get; set; }
+            public static string DCSRemoteVersionBuild { get; set; }
+            public static string DCSLocalVariant { get; set; }
+            public static string DCSRemoteVariant { get; set; }
         }
-        public void FSRDetect()
+        private void FSRDetect()
         {
             string DCSPath = Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]);
             string FSRConfigFile = DCSPath + "\\bin\\openvr_mod.cfg";
@@ -214,7 +241,64 @@ namespace DCSLauncher
 
             }
         }
-        public void NoUtilsDetect()
+        private void DCSUpdateCheck()
+        {
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["UpdateCheck"]))
+            {
+                Utils.DCSLocalVersion();
+                Utils.DCSRemoteVersion();
+                this.toolStripStatusLabel1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+                this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+                toolStripStatusLabel1.Text = "Local version: " + Globals.DCSLocalVersion + " " + Globals.DCSLocalVariant;
+                toolStripStatusLabel2.Text = "Remote version: " + Globals.DCSRemoteVersion + " " + Globals.DCSRemoteVariant;
+                if (Globals.DCSLocalVersion != "None")
+                {
+                    if (Globals.DCSLocalVersionBuild != Globals.DCSRemoteVersionBuild)
+                    {
+                        Console.WriteLine("DCS World build mismatch!");
+                        if (Convert.ToBoolean(ConfigurationManager.AppSettings["BalloonTips"]) == true)
+                        {
+                            notifyIcon1.BalloonTipTitle = "DCS World build mismatch!";
+                            notifyIcon1.BalloonTipText = "Local version: " + Globals.DCSLocalVersion + " " + Globals.DCSLocalVariant + "\n" + "Remote version: " + Globals.DCSRemoteVersion + " " + Globals.DCSRemoteVariant;
+                            notifyIcon1.BalloonTipIcon = ToolTipIcon.Warning;
+                            notifyIcon1.ShowBalloonTip(200);
+                        }
+                        if (ConfigurationManager.AppSettings["DCSVersion"] == "openbeta")
+                        {
+                            string box_msg = "DCS World openbeta build mismatch detected! Do you want to run DCS Updater?";
+                            string box_title = "Update DCS World?";
+                            var selectedOption = MessageBox.Show(box_msg, box_title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (selectedOption == DialogResult.Yes)
+                            {
+                                StartDCSUpdater();
+                            }
+                        }
+                        if (ConfigurationManager.AppSettings["DCSVersion"] == "release")
+                        {
+                            string box_msg = "DCS World release build mismatch detected! Do you want to run DCS Updater?";
+                            string box_title = "Update DCS World?";
+                            var selectedOption = MessageBox.Show(box_msg, box_title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (selectedOption == DialogResult.Yes)
+                            {
+                                StartDCSUpdater();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("DCS World is up to date!");
+                        if (Convert.ToBoolean(ConfigurationManager.AppSettings["BalloonTips"]) == true)
+                        {
+                            notifyIcon1.BalloonTipTitle = "DCS World is up to date!";
+                            notifyIcon1.BalloonTipText = "Local version: " + Globals.DCSLocalVersion + " " + Globals.DCSLocalVariant + "\n" + "Remote version: " + Globals.DCSRemoteVersion + " " + Globals.DCSRemoteVariant;
+                            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+                            notifyIcon1.ShowBalloonTip(200);
+                        }
+                    }
+                }
+            }
+        }
+        private void NoUtilsDetect()
         {
             if (Convert.ToString(ConfigurationManager.AppSettings["TrackIRPath"]) == "" &&
                 Convert.ToString(ConfigurationManager.AppSettings["VoiceAttackPath"]) == "" &&
@@ -229,24 +313,28 @@ namespace DCSLauncher
                 label_NoUtils.Visible = false;
             }
         }
-        public void FolderDetect()
+        private void FolderDetect()
         {
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]) == "")
             {
                 Console.WriteLine("DCS Main folder not specified!");
                 button_Start.Enabled = false;
+                this.startDCSToolStripMenuItem.Enabled = false;
             }
             if (Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathBase"]) == "")
             {
                 Console.WriteLine("DCS Saved Games folder not specified!");
                 button_Start.Enabled = false;
+                this.startDCSToolStripMenuItem.Enabled = false;
             }
             else
             {
                 button_Start.Enabled = true;
+                this.startDCSToolStripMenuItem.Enabled = true;
+                this.flatscreenModeToolStripMenuItem.Enabled = true;
             }
         }
-        public void DCSRunningCheck()
+        private void DCSRunningCheck()
         {
             Process[] dcs = Process.GetProcessesByName("DCS");
             if (dcs.Length != 0)
@@ -259,7 +347,7 @@ namespace DCSLauncher
                 }
             }
         }
-        public void StartDeviceCheck()
+        private void StartDeviceCheck()
         {
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["DeviceStatusCheck"]))
             {
@@ -286,7 +374,7 @@ namespace DCSLauncher
                 groupBox_Devices.Visible = false;
             }
         }
-        public void StopDeviceCheck()
+        private void StopDeviceCheck()
         {
             DeviceStatusCheck.CancelAsync();
             checkBox1.Text = "Controllers";
@@ -298,7 +386,7 @@ namespace DCSLauncher
             checkBox2.Checked = false;
             checkBox2.Enabled = false;
         }
-        public void StartApplications()
+        private void StartApplications()
         {
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["TrackIR"]) == true)
             {
@@ -375,7 +463,34 @@ namespace DCSLauncher
                 StopSteamVR();
             }
         }
-        public void StartDCS_Flatscreen()
+        private void StartDCSUpdater()
+        {
+            string DCSPath = Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]);
+            ProcessStartInfo startInfo = new();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = DCSPath + @"\bin\DCS_updater.exe";
+            if (ConfigurationManager.AppSettings["DCSVersion"] == "openbeta")
+            {
+                startInfo.Arguments = "update @openbeta";
+            }
+            if (ConfigurationManager.AppSettings["DCSVersion"] == "release")
+            {
+                startInfo.Arguments = "update @release";
+            }
+            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            try
+            {
+                Console.WriteLine("Starting DCS Updater...");
+                Process.Start(startInfo);
+                Environment.Exit(0);
+            }
+            catch
+            {
+                Console.WriteLine("Error starting DCS Updater!");
+            }
+        }
+        private void StartDCS_Flatscreen()
         {
             string DCSPath = Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]);
             ProcessStartInfo startInfo = new();
@@ -397,7 +512,7 @@ namespace DCSLauncher
                 Console.WriteLine("Error starting DCS World!");
             }
         }
-        public void StartDCS_VR()
+        private void StartDCS_VR()
         {
             string DCSPath = Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]);
             string DCSSavedGamesPathVR = Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathVR"]);
@@ -413,7 +528,7 @@ namespace DCSLauncher
             startInfo.CreateNoWindow = false;
             startInfo.UseShellExecute = false;
             startInfo.FileName = DCSPath + @"\bin\DCS.exe";
-            startInfo.Arguments = "-w \""+dirName+"\""+VRType;
+            startInfo.Arguments = "-w \"" + dirName + "\"" + VRType;
             startInfo.WindowStyle = ProcessWindowStyle.Normal;
             try
             {
@@ -717,6 +832,7 @@ namespace DCSLauncher
                 StopDeviceCheck();
                 WaitForDCSStart.CancelAsync();
                 button_Stop.Enabled = false;
+                this.stopDCSToolStripMenuItem.Enabled = false;
             }
             else
             {
@@ -730,7 +846,9 @@ namespace DCSLauncher
                     Utils.GPUOverclockReset();
                     StopDCS();
                     button_Start.Enabled = true;
+                    this.startDCSToolStripMenuItem.Enabled = true;
                     button_Stop.Enabled = false;
+                    this.stopDCSToolStripMenuItem.Enabled = false;
                 }
             }
         }
@@ -829,6 +947,7 @@ namespace DCSLauncher
                 Utils.AddOrUpdateAppSettings("DCSStartTime", Convert.ToString(Form1.DCSTime));
                 progressBar1.Value = progressBar1.Maximum;
                 button_Stop.Enabled = true;
+                this.stopDCSToolStripMenuItem.Enabled = true;
                 MoveDCS();
                 MoveSteamVR();
                 WaitForDCSStop.RunWorkerAsync();
@@ -856,6 +975,7 @@ namespace DCSLauncher
             Utils.DCSPowerPlanBalanced();
             Utils.GPUOverclockReset();
             button_Start.Enabled = true;
+            this.startDCSToolStripMenuItem.Enabled = true;
             button_Stop.Enabled = false;
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["DeviceStatusCheck"]))
             {
@@ -871,11 +991,11 @@ namespace DCSLauncher
             }
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["AutoClose"]) == true)
             {
-                Console.WriteLine("Closing in 10 seconds...");
-                    if (AutoClose.IsBusy != true)
-                    {
+                Console.WriteLine("Closing Launcher in 10 seconds...");
+                if (AutoClose.IsBusy != true)
+                {
                     AutoClose.RunWorkerAsync();
-                    }
+                }
             }
         }
         private void AutoClose_DoWork(object sender, DoWorkEventArgs e)
@@ -897,10 +1017,11 @@ namespace DCSLauncher
         }
         private void AutoClose_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.Text = ("DCS Launcher [Closing in: "+e.ProgressPercentage.ToString() + " seconds]");
+            this.Text = ("DCS Launcher [Closing in: " + e.ProgressPercentage.ToString() + " seconds]");
         }
         private void AutoClose_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.notifyIcon1.Visible = false;
             Application.Exit();
         }
         private void MinimizeJetSeatHandler_DoWork(object sender, DoWorkEventArgs e)
@@ -1104,13 +1225,15 @@ namespace DCSLauncher
                 }
             }
         }
-
         private void DeviceStatusCheck_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             TestDevices();
             ButtonLock();
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["TrayIcon"]) == true)
+            {
+                ToolStripControl();
+            }
         }
-
         private void DeviceStatusCheck_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled == true)
@@ -1123,6 +1246,100 @@ namespace DCSLauncher
                 checkBox2.ForeColor = Color.Gray;
                 checkBox2.Checked = false;
                 checkBox2.Enabled = false;
+            }
+        }
+        private void ControllersNotify()
+        {
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["BalloonTips"]) == true)
+            {
+                if (Globals.ControllersDetected)
+                {
+                    notifyIcon2.Icon = global::DCSLauncher.Properties.Resources.Joystick_Green;
+                    notifyIcon2.Text = "Controllers Ready";
+                    //notifyIcon2.BalloonTipTitle = "Controllers Ready";
+                    notifyIcon2.BalloonTipText = "Controllers Ready";
+                    notifyIcon2.BalloonTipIcon = ToolTipIcon.None;
+                    notifyIcon2.ShowBalloonTip(200);
+                }
+                else
+                {
+                    notifyIcon2.Icon = global::DCSLauncher.Properties.Resources.Joystick_Red;
+                    notifyIcon2.Text = "Controllers Not Ready";
+                    //notifyIcon2.BalloonTipTitle = "Controllers Not Ready";
+                    notifyIcon2.BalloonTipText = "Controllers Not Ready";
+                    notifyIcon2.BalloonTipIcon = ToolTipIcon.None;
+                    notifyIcon2.ShowBalloonTip(200);
+                }
+            }
+            else
+            {
+                if (Globals.ControllersDetected)
+                {
+                    notifyIcon2.Icon = global::DCSLauncher.Properties.Resources.Joystick_Green;
+                    notifyIcon2.Text = "Controllers Ready";
+                }
+                else
+                {
+                    notifyIcon2.Icon = global::DCSLauncher.Properties.Resources.Joystick_Red;
+                    notifyIcon2.Text = "Controllers Not Ready";
+                }
+            }
+        }
+        private void HMDNotify()
+        {
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["BalloonTips"]) == true)
+            {
+                if (Globals.HMDDetected)
+                {
+                    notifyIcon3.Icon = global::DCSLauncher.Properties.Resources.HMD_Green;
+                    notifyIcon3.Text = "Controllers Ready";
+                    //notifyIcon3.BalloonTipTitle = "HMD Ready";
+                    notifyIcon3.BalloonTipText = "HMD Ready";
+                    notifyIcon3.BalloonTipIcon = ToolTipIcon.None;
+                    notifyIcon3.ShowBalloonTip(200);
+                }
+                else
+                {
+                    notifyIcon3.Icon = global::DCSLauncher.Properties.Resources.HMD_Red;
+                    notifyIcon3.Text = "HMD Not Ready";
+                    //notifyIcon3.BalloonTipTitle = "HMD Not Ready";
+                    notifyIcon3.BalloonTipText = "HMD Not Ready";
+                    notifyIcon3.BalloonTipIcon = ToolTipIcon.None;
+                    notifyIcon3.ShowBalloonTip(200);
+                }
+            }
+            else
+            {
+                if (Globals.HMDDetected)
+                {
+                    notifyIcon3.Icon = global::DCSLauncher.Properties.Resources.HMD_Green;
+                    notifyIcon3.Text = "HMD Ready";
+                }
+                else
+                {
+                    notifyIcon3.Icon = global::DCSLauncher.Properties.Resources.HMD_Red;
+                    notifyIcon3.Text = "HMD Not Ready";
+                }
+            }
+        }
+        private void ToolStripControl()
+        {
+            if (Globals.ControllersDetected)
+            {
+                this.flatscreenModeToolStripMenuItem.Enabled = true;
+                if (Globals.HMDDetected)
+                {
+                    this.vRModeToolStripMenuItem.Enabled = true;
+                }
+                if (Globals.HMDDetected == false)
+                {
+                    this.vRModeToolStripMenuItem.Enabled = false;
+                }
+            }
+            if (Globals.ControllersDetected == false)
+            {
+                this.flatscreenModeToolStripMenuItem.Enabled = false;
+                this.vRModeToolStripMenuItem.Enabled = false;
             }
         }
         public void ButtonLock()
@@ -1150,6 +1367,32 @@ namespace DCSLauncher
                 }
             }
         }
+        private int _CtrlProperty = 2;
+        public int CtrlProperty
+        {
+            get { return _CtrlProperty; }
+            set
+            {
+                if (value != _CtrlProperty)
+                {
+                    this.ControllersNotify();
+                    _CtrlProperty = value;
+                }
+            }
+        }
+        private int _HMDProperty = 2;
+        public int HMDProperty
+        {
+            get { return _HMDProperty; }
+            set
+            {
+                if (value != _HMDProperty)
+                {
+                    this.HMDNotify();
+                    _HMDProperty = value;
+                }
+            }
+        }
         public void TestDevices()
         {
             var list = DeviceCheck.GetUSBDevices();
@@ -1161,7 +1404,6 @@ namespace DCSLauncher
             string[] HMD = File.ReadAllLines("HMD.txt");
             List<object> HMDList = new List<object>(HMD);
             var HMDAvailable = new List<string>();
-
             if (new FileInfo("Controllers.txt").Length != 0)
             {
                 foreach (var device in list)
@@ -1179,6 +1421,7 @@ namespace DCSLauncher
                     checkBox1.Checked = true;
                     ControllerAvailable.Clear();
                     Globals.ControllersDetected = true;
+                    CtrlProperty = 1;
                 }
                 else
                 {
@@ -1188,6 +1431,7 @@ namespace DCSLauncher
                     checkBox1.Checked = false;
                     ControllerAvailable.Clear();
                     Globals.ControllersDetected = false;
+                    CtrlProperty = 0;
                 }
             }
 
@@ -1208,6 +1452,7 @@ namespace DCSLauncher
                     checkBox2.Checked = true;
                     HMDAvailable.Clear();
                     Globals.HMDDetected = true;
+                    HMDProperty = 1;
                 }
                 else
                 {
@@ -1217,11 +1462,12 @@ namespace DCSLauncher
                     checkBox2.Checked = false;
                     HMDAvailable.Clear();
                     Globals.HMDDetected = false;
+                    HMDProperty = 0;
                 }
             }
             else
             {
-                Globals.HMDDetected = true;
+                Globals.HMDDetected = false;
             }
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -1232,32 +1478,66 @@ namespace DCSLauncher
         {
             this.SaveWindowPosition();
         }
+        private void stopDCSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button_Stop.PerformClick();
+        }
+        private void flatscreenModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            radioButton_FlatscreenMode.Checked = true;
+            button_Start.PerformClick();
+        }
+        private void vRModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            radioButton_VRMode.Checked = true;
+            button_Start.PerformClick();
+        }
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+        }
+        private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var cplPath = System.IO.Path.Combine(Environment.SystemDirectory, "control.exe");
+            System.Diagnostics.Process.Start(cplPath, "/name Microsoft.GameControllers");
+        }
+        private void exitLauncherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.notifyIcon1.Visible = false;
+            Application.Exit();
+        }
         private void RestoreWindowPosition()
         {
             if (Settings.Default.HasSetDefaults)
             {
-                this.WindowState = Settings.Default.WindowState;
-                this.Location = Settings.Default.Location;
-                this.Size = Settings.Default.Size;
+                if (Convert.ToBoolean(ConfigurationManager.AppSettings["StartMinimized"]) == true)
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                    this.Location = Settings.Default.Location;
+                    //this.Size = Settings.Default.Size;
+                }
+                else
+                {
+                    this.WindowState = Settings.Default.WindowState;
+                    this.Location = Settings.Default.Location;
+                    //this.Size = Settings.Default.Size;
+                }
             }
         }
         private void SaveWindowPosition()
         {
             Settings.Default.WindowState = this.WindowState;
-
             if (this.WindowState == FormWindowState.Normal)
             {
                 Settings.Default.Location = this.Location;
-                Settings.Default.Size = this.Size;
+                //Settings.Default.Size = this.Size;
             }
             else
             {
                 Settings.Default.Location = this.RestoreBounds.Location;
-                Settings.Default.Size = this.RestoreBounds.Size;
+                //Settings.Default.Size = this.RestoreBounds.Size;
             }
-
             Settings.Default.HasSetDefaults = true;
-
             Settings.Default.Save();
         }
     }

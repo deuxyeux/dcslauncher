@@ -55,6 +55,11 @@ namespace DCSLauncher
             bool OpenTrack = Convert.ToBoolean(ConfigurationManager.AppSettings["OpenTrack"]);
             bool Helios = Convert.ToBoolean(ConfigurationManager.AppSettings["Helios"]);
             bool AutoClose = Convert.ToBoolean(ConfigurationManager.AppSettings["AutoClose"]);
+            bool TrayIcon = Convert.ToBoolean(ConfigurationManager.AppSettings["TrayIcon"]);
+            bool CtrlTrayIcon = Convert.ToBoolean(ConfigurationManager.AppSettings["CtrlTrayIcon"]);
+            bool HMDTrayIcon = Convert.ToBoolean(ConfigurationManager.AppSettings["HMDTrayIcon"]);
+            bool BalloonTips = Convert.ToBoolean(ConfigurationManager.AppSettings["BalloonTips"]);
+            bool StartMinimized = Convert.ToBoolean(ConfigurationManager.AppSettings["StartMinimized"]);
             bool DCSReposition = Convert.ToBoolean(ConfigurationManager.AppSettings["DCSReposition"]);
             bool DCSResize = Convert.ToBoolean(ConfigurationManager.AppSettings["DCSResize"]);
             bool DCSCustomResolution = Convert.ToBoolean(ConfigurationManager.AppSettings["DCSCustomResolution"]);
@@ -92,6 +97,8 @@ namespace DCSLauncher
             bool CpuPriority = Convert.ToBoolean(ConfigurationManager.AppSettings["CpuPriority"]);
             bool PowerPlan = Convert.ToBoolean(ConfigurationManager.AppSettings["PowerPlan"]);
             bool AutoCloseSRS = Convert.ToBoolean(ConfigurationManager.AppSettings["AutoCloseSRS"]);
+            bool UpdateCheck = Convert.ToBoolean(ConfigurationManager.AppSettings["UpdateCheck"]);
+            string DCSVersion = (ConfigurationManager.AppSettings["DCSVersion"]);
             bool PiTool = Convert.ToBoolean(ConfigurationManager.AppSettings["PiTool"]);
             bool PiServiceControl = Convert.ToBoolean(ConfigurationManager.AppSettings["PiServiceControl"]);
             bool LighthouseControl = Convert.ToBoolean(ConfigurationManager.AppSettings["LighthouseControl"]);
@@ -111,6 +118,11 @@ namespace DCSLauncher
             checkBox_OpenTrack.Checked = OpenTrack;
             checkBox_Helios.Checked = Helios;
             checkBox_AutoClose.Checked = AutoClose;
+            checkBox_TrayIcon.Checked = TrayIcon;
+            checkBox_CtrlTrayIcon.Checked = CtrlTrayIcon;
+            checkBox_HMDTrayIcon.Checked = HMDTrayIcon;
+            checkBox_BalloonTips.Checked = BalloonTips;
+            checkBox_StartMinimized.Checked = StartMinimized;
             checkBox_DCSReposition.Checked = DCSReposition;
             checkBox_DCSResize.Checked = DCSResize;
             checkBox_DCSCustomResolution.Checked = DCSCustomResolution;
@@ -132,6 +144,15 @@ namespace DCSLauncher
             this.CpuPriority.Checked = CpuPriority;
             this.PowerPlan.Checked = PowerPlan;
             this.AutoCloseSRS.Checked = AutoCloseSRS;
+            this.UpdateCheck.Checked = UpdateCheck;
+            if (DCSVersion == "openbeta")
+            {
+                this.radioButton_OpenBeta.Checked = true;
+            }
+            if (DCSVersion == "release")
+            {
+                this.radioButton_Release.Checked = true;
+            }
             this.PiTool.Checked = PiTool;
             this.PiServiceControl.Checked = PiServiceControl;
             this.LighthouseControl.Checked = LighthouseControl;
@@ -147,6 +168,10 @@ namespace DCSLauncher
             numeric_SplashPosY.Value = SplashPosY;
             numeric_SteamVRPosX.Value = SteamVRPosX;
             numeric_SteamVRPosY.Value = SteamVRPosY;
+            if (DCSSavedGamesPathVR == "")
+            {
+                this.checkBox_HMDTrayIcon.Enabled = false;
+            }
             if (SimShaker)
             {
                 this.MinimizeJetSeat.Enabled = true;
@@ -154,6 +179,16 @@ namespace DCSLauncher
             else
             {
                 this.MinimizeJetSeat.Enabled = false;
+            }
+            if (UpdateCheck)
+            {
+                this.radioButton_OpenBeta.Enabled = true;
+                this.radioButton_Release.Enabled = true;
+            }
+            else
+            {
+                this.radioButton_OpenBeta.Enabled = false;
+                this.radioButton_Release.Enabled = false;
             }
             if (ConfigurationManager.AppSettings["TrackIRPath"] == "")
             {
@@ -360,6 +395,11 @@ namespace DCSLauncher
             Utils.AddOrUpdateAppSettings("OpenTrack", Convert.ToString(checkBox_OpenTrack.Checked));
             Utils.AddOrUpdateAppSettings("Helios", Convert.ToString(checkBox_Helios.Checked));
             Utils.AddOrUpdateAppSettings("AutoClose", Convert.ToString(checkBox_AutoClose.Checked));
+            Utils.AddOrUpdateAppSettings("TrayIcon", Convert.ToString(checkBox_TrayIcon.Checked));
+            Utils.AddOrUpdateAppSettings("CtrlTrayIcon", Convert.ToString(checkBox_CtrlTrayIcon.Checked));
+            Utils.AddOrUpdateAppSettings("HMDTrayIcon", Convert.ToString(checkBox_HMDTrayIcon.Checked));
+            Utils.AddOrUpdateAppSettings("BalloonTips", Convert.ToString(checkBox_BalloonTips.Checked));
+            Utils.AddOrUpdateAppSettings("StartMinimized", Convert.ToString(checkBox_StartMinimized.Checked));
             Utils.AddOrUpdateAppSettings("DCSReposition", Convert.ToString(checkBox_DCSReposition.Checked));
             Utils.AddOrUpdateAppSettings("DCSResize", Convert.ToString(checkBox_DCSResize.Checked));
             Utils.AddOrUpdateAppSettings("DCSCustomResolution", Convert.ToString(checkBox_DCSCustomResolution.Checked));
@@ -397,12 +437,21 @@ namespace DCSLauncher
             Utils.AddOrUpdateAppSettings("CpuPriority", Convert.ToString(this.CpuPriority.Checked));
             Utils.AddOrUpdateAppSettings("PowerPlan", Convert.ToString(this.PowerPlan.Checked));
             Utils.AddOrUpdateAppSettings("AutoCloseSRS", Convert.ToString(this.AutoCloseSRS.Checked));
+            Utils.AddOrUpdateAppSettings("UpdateCheck", Convert.ToString(this.UpdateCheck.Checked));
             Utils.AddOrUpdateAppSettings("PiTool", Convert.ToString(this.PiTool.Checked));
             Utils.AddOrUpdateAppSettings("PiServiceControl", Convert.ToString(this.PiServiceControl.Checked));
             Utils.AddOrUpdateAppSettings("LighthouseControl", Convert.ToString(this.LighthouseControl.Checked));
             Utils.AddOrUpdateAppSettings("DeviceStatusCheck", Convert.ToString(this.DeviceStatusCheck.Checked));
             Utils.AddOrUpdateAppSettings("GPUOverclock", Convert.ToString(checkBox_GPUOverclock.Checked));
 
+            if (radioButton_OpenBeta.Checked)
+            {
+                Utils.AddOrUpdateAppSettings("DCSVersion", Convert.ToString("openbeta"));
+            }
+            if (radioButton_Release.Checked)
+            {
+                Utils.AddOrUpdateAppSettings("DCSVersion", Convert.ToString("release"));
+            }
             if (checkBox_DCSCustomResolution.Checked)
             {
                 DCSCustomResolutionConfigUpdate();
@@ -786,6 +835,20 @@ namespace DCSLauncher
             {
                 numeric_SteamVRPosX.Enabled = false;
                 numeric_SteamVRPosY.Enabled = false;
+            }
+        }
+
+        private void UpdateCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (UpdateCheck.Checked)
+            {
+                radioButton_OpenBeta.Enabled = true;
+                radioButton_Release.Enabled = true;
+            }
+            else
+            {
+                radioButton_OpenBeta.Enabled = false;
+                radioButton_Release.Enabled = false;
             }
         }
     }

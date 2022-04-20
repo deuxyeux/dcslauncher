@@ -5,8 +5,10 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,16 +45,23 @@ namespace DCSLauncher
             {
                 string DCSSavedGamesPathBase = (ConfigurationManager.AppSettings["DCSSavedGamesPathBase"]);
                 int DeleteTracksDays = Convert.ToInt32(ConfigurationManager.AppSettings["DeleteTracksDays"]);
-                string TrackDirectory = DCSSavedGamesPathBase + @"\Tracks";
-                string[] files = Directory.GetFiles(TrackDirectory);
-                foreach (string file in files)
+                try
                 {
-                    FileInfo fi = new FileInfo(file);
-                    if (fi.LastWriteTime < DateTime.Now.AddDays(-DeleteTracksDays))
+                    string TrackDirectory = DCSSavedGamesPathBase + @"\Tracks";
+                    string[] files = Directory.GetFiles(TrackDirectory);
+                    foreach (string file in files)
                     {
-                        Console.WriteLine("Deleted " + Path.GetFileName(file));
-                        fi.Delete();
+                        FileInfo fi = new FileInfo(file);
+                        if (fi.LastWriteTime < DateTime.Now.AddDays(-DeleteTracksDays))
+                        {
+                            Console.WriteLine("Deleted " + Path.GetFileName(file));
+                            fi.Delete();
+                        }
                     }
+                }
+                catch 
+                {
+                    Console.WriteLine("Can't find Tracks directory!");                
                 }
             }
         }
@@ -61,29 +70,97 @@ namespace DCSLauncher
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["DeleteTacview"]))
             {
                 int DeleteTracksDays = Convert.ToInt32(ConfigurationManager.AppSettings["DeleteTracksDays"]);
-                string TacviewPath = KnownFolders.GetPath(KnownFolder.Documents) + @"\Tacview\";
-                string[] files = Directory.GetFiles(TacviewPath);
-                foreach (string file in files)
+                try
                 {
-                    FileInfo fi = new FileInfo(file);
-                    if (fi.LastWriteTime < DateTime.Now.AddDays(-DeleteTracksDays))
+                    string TacviewPath = KnownFolders.GetPath(KnownFolder.Documents) + @"\Tacview\";
+                    string[] files = Directory.GetFiles(TacviewPath);
+                    foreach (string file in files)
                     {
-                        Console.WriteLine("Deleted " + Path.GetFileName(file));
-                        fi.Delete();
+                        FileInfo fi = new FileInfo(file);
+                        if (fi.LastWriteTime < DateTime.Now.AddDays(-DeleteTracksDays))
+                        {
+                            Console.WriteLine("Deleted " + Path.GetFileName(file));
+                            fi.Delete();
+                        }
                     }
+                }
+                catch
+                {
+                    Console.WriteLine("Can't find Tacview directory!");
                 }
             }
         }
-        public static void DCSVersion()
+        public static void DCSLocalVersion()
         {
             try
             {
+                string DCSPath = Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]);
+                string VariantFile = DCSPath + "\\dcs_variant.txt";
+                Regex Build = new Regex("\\d\\d\\d\\d\\d+", RegexOptions.IgnoreCase);
                 FileVersionInfo DCSVersionInfo = FileVersionInfo.GetVersionInfo(Convert.ToString(ConfigurationManager.AppSettings["DCSPath"]) + "\\bin\\DCS.exe");
-                Console.WriteLine("DCS World Version: " + DCSVersionInfo.ProductVersion);
+                Form1.Globals.DCSLocalVersion = DCSVersionInfo.ProductVersion;
+                string DCSLocalVersionBuild = Convert.ToString(Build.Match(Form1.Globals.DCSLocalVersion));
+                Form1.Globals.DCSLocalVersionBuild = DCSLocalVersionBuild;
+                if (File.Exists(VariantFile))
+                {
+                    string DCSVariant = File.ReadAllText(VariantFile);
+                    Form1.Globals.DCSLocalVariant = DCSVariant;
+                    //Console.WriteLine("Local DCS version: "+DCSVersionInfo.ProductVersion+" "+DCSVariant);
+                }
+                else
+                {
+                    Form1.Globals.DCSLocalVariant = "";
+                    //Console.WriteLine("Local DCS version: " + DCSVersionInfo.ProductVersion+");
+                }
             }
             catch
             {
-                Console.WriteLine("Error getting DCS version!");
+                Form1.Globals.DCSLocalVersion = "";
+                Console.WriteLine("Error getting local DCS version!");
+            }
+        }
+        public static void DCSRemoteVersion()
+        {
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["UpdateCheck"]))
+            {
+                var url = "http://updates.digitalcombatsimulator.com/";
+                var client = new WebClient();
+                using (var stream = client.OpenRead(url))
+                using (var reader = new StreamReader(stream))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (ConfigurationManager.AppSettings["DCSVersion"] == "openbeta")
+                        {
+                            var OBReg = new Regex("<h2>Current openbeta is <a href='https://www\\.digitalcombatsimulator\\.com/en/news/changelog/openbeta/([0-9]+(\\.[0-9]+)+)/'>([0-9]+(\\.[0-9]+)+)</a></h2>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                            string OBVersion = OBReg.Match(line).Groups[1].Value;
+                            if (OBVersion != "")
+                            {
+                                string dcs_ob_version = OBVersion;
+                                Regex Build = new Regex("\\d\\d\\d\\d\\d+", RegexOptions.IgnoreCase);
+                                Form1.Globals.DCSRemoteVersion = dcs_ob_version;
+                                Form1.Globals.DCSRemoteVersionBuild = Convert.ToString(Build.Match(Form1.Globals.DCSRemoteVersion));
+                                Form1.Globals.DCSRemoteVariant = "openbeta";
+                                //Console.WriteLine("Latest DCS version: " + dcs_ob_version + " openbeta");
+                            }
+                        }
+                        if (ConfigurationManager.AppSettings["DCSVersion"] == "release")
+                        {
+                            var RelReg = new Regex("<h2>Latest stable version is <a href='https://www\\.digitalcombatsimulator\\.com/en/news/changelog/openbeta/([0-9]+(\\.[0-9]+)+)/'>([0-9]+(\\.[0-9]+)+)</a></h2>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                            string RelVersion = RelReg.Match(line).Groups[1].Value;
+                            if (RelVersion != "")
+                            {
+                                string dcs_rel_version = RelVersion;
+                                Regex Build = new Regex("\\d\\d\\d\\d\\d+", RegexOptions.IgnoreCase);
+                                Form1.Globals.DCSRemoteVersion = dcs_rel_version;
+                                Form1.Globals.DCSRemoteVersionBuild = Convert.ToString(Build.Match(Form1.Globals.DCSRemoteVersion));
+                                Form1.Globals.DCSRemoteVariant = "release";
+                                //Console.WriteLine("Latest DCS version: " + dcs_rel_version + " release");
+                            }
+                        }
+                    }
+                }
             }
         }
         public static void DCSCpuPriority()

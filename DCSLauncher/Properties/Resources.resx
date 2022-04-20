@@ -127,6 +127,30 @@
   <data name="Helios_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\helios_enabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HMD_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HMD_Black.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HMD_Green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HMD_Green.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HMD_Red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HMD_Red.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HMD_White" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HMD_white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Joystick_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\joystick-black.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Joystick_Green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\joystick_green.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Joystick_Red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\joystick_red.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Joystick_White" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\joystick-white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="OpenTrack_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\opentrack_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
