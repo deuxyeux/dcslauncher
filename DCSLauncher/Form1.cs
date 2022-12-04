@@ -563,12 +563,22 @@ namespace DCSLauncher
                 const short SWP_NOZORDER = 0X4;
                 if (radioButton_FlatscreenMode.Checked && ApplyToFlatscreen)
                 {
-                    if (DCSReposition && worker.MainWindowTitle.Equals("Digital Combat Simulator"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS.openbeta"))
                     {
                         Console.WriteLine("Repositioning DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
                     }
-                    if (DCSResize && worker.MainWindowTitle.Equals("Digital Combat Simulator"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS"))
+                    {
+                        Console.WriteLine("Repositioning DCS window...");
+                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
+                    }
+                    if (DCSResize && worker.MainWindowTitle.Equals("DCS.openbeta"))
+                    {
+                        Console.WriteLine("Resizing DCS window...");
+                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
+                    }
+                    if (DCSResize && worker.MainWindowTitle.Equals("DCS"))
                     {
                         Console.WriteLine("Resizing DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
@@ -576,12 +586,22 @@ namespace DCSLauncher
                 }
                 if (radioButton_VRMode.Checked && ApplyToVR)
                 {
-                    if (DCSReposition && worker.MainWindowTitle.Equals("Digital Combat Simulator"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS.openbeta"))
                     {
                         Console.WriteLine("Repositioning DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
                     }
-                    if (DCSResize && worker.MainWindowTitle.Equals("Digital Combat Simulator"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS"))
+                    {
+                        Console.WriteLine("Repositioning DCS window...");
+                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
+                    }
+                    if (DCSResize && worker.MainWindowTitle.Equals("DCS.openbeta"))
+                    {
+                        Console.WriteLine("Resizing DCS window...");
+                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
+                    }
+                    if (DCSResize && worker.MainWindowTitle.Equals("DCS"))
                     {
                         Console.WriteLine("Resizing DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
@@ -907,7 +927,12 @@ namespace DCSLauncher
                     Process[] procs = Process.GetProcessesByName("DCS");
                     foreach (Process proc in procs)
                     {
-                        if (proc.MainWindowTitle.Equals("Digital Combat Simulator"))
+                        if (proc.MainWindowTitle.Equals("DCS.openbeta"))
+                        {
+                            i = 1;
+                            break;
+                        }
+                        if (proc.MainWindowTitle.Equals("DCS"))
                         {
                             i = 1;
                             break;
