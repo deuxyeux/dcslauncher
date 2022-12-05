@@ -60,6 +60,10 @@ namespace DCSLauncher
         private void SettingsLoad()
         {
             Globals.SavedGamesPath = KnownFolders.GetPath(KnownFolder.SavedGames) + @"\";
+            string DCSSavedGamesPathBase = Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathBase"]);
+            string DCSSavedGamesPathVR = Convert.ToString(ConfigurationManager.AppSettings["DCSSavedGamesPathVR"]);
+            Globals.DCSDirNameBase = new DirectoryInfo(DCSSavedGamesPathBase).Name;
+            Globals.DCSDirNameVR = new DirectoryInfo(DCSSavedGamesPathVR).Name;
             bool TrackIR = Convert.ToBoolean(ConfigurationManager.AppSettings["TrackIR"]);
             bool VoiceAttack = Convert.ToBoolean(ConfigurationManager.AppSettings["VoiceAttack"]);
             bool SimShaker = Convert.ToBoolean(ConfigurationManager.AppSettings["SimShaker"]);
@@ -212,6 +216,8 @@ namespace DCSLauncher
             public static bool ControllersDetected { get; set; }
             public static bool HMDDetected { get; set; }
             public static string SavedGamesPath { get; set; }
+            public static string DCSDirNameBase { get; set; }
+            public static string DCSDirNameVR { get; set; }
             public static string DCSLocalVersion { get; set; }
             public static string DCSRemoteVersion { get; set; }
             public static string DCSLocalVersionBuild { get; set; }
@@ -563,22 +569,12 @@ namespace DCSLauncher
                 const short SWP_NOZORDER = 0X4;
                 if (radioButton_FlatscreenMode.Checked && ApplyToFlatscreen)
                 {
-                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS.openbeta"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals(Globals.DCSDirNameBase))
                     {
                         Console.WriteLine("Repositioning DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
                     }
-                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS"))
-                    {
-                        Console.WriteLine("Repositioning DCS window...");
-                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
-                    }
-                    if (DCSResize && worker.MainWindowTitle.Equals("DCS.openbeta"))
-                    {
-                        Console.WriteLine("Resizing DCS window...");
-                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
-                    }
-                    if (DCSResize && worker.MainWindowTitle.Equals("DCS"))
+                    if (DCSResize && worker.MainWindowTitle.Equals(Globals.DCSDirNameBase))
                     {
                         Console.WriteLine("Resizing DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
@@ -586,22 +582,12 @@ namespace DCSLauncher
                 }
                 if (radioButton_VRMode.Checked && ApplyToVR)
                 {
-                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS.openbeta"))
+                    if (DCSReposition && worker.MainWindowTitle.Equals(Globals.DCSDirNameVR))
                     {
                         Console.WriteLine("Repositioning DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
                     }
-                    if (DCSReposition && worker.MainWindowTitle.Equals("DCS"))
-                    {
-                        Console.WriteLine("Repositioning DCS window...");
-                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOZORDER);
-                    }
-                    if (DCSResize && worker.MainWindowTitle.Equals("DCS.openbeta"))
-                    {
-                        Console.WriteLine("Resizing DCS window...");
-                        Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
-                    }
-                    if (DCSResize && worker.MainWindowTitle.Equals("DCS"))
+                    if (DCSResize && worker.MainWindowTitle.Equals(Globals.DCSDirNameVR))
                     {
                         Console.WriteLine("Resizing DCS window...");
                         Form1.SetWindowPos(worker.MainWindowHandle, 0, DCSPosX, DCSPosY, DCSWidth, DCSHeight, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOZORDER);
@@ -927,12 +913,12 @@ namespace DCSLauncher
                     Process[] procs = Process.GetProcessesByName("DCS");
                     foreach (Process proc in procs)
                     {
-                        if (proc.MainWindowTitle.Equals("DCS.openbeta"))
+                        if (proc.MainWindowTitle.Equals(Globals.DCSDirNameBase))
                         {
                             i = 1;
                             break;
                         }
-                        if (proc.MainWindowTitle.Equals("DCS"))
+                        if (proc.MainWindowTitle.Equals(Globals.DCSDirNameVR))
                         {
                             i = 1;
                             break;
